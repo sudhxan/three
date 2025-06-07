@@ -1,5 +1,63 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { clamp } from 'three/src/math/MathUtils.js'
+
+/**
+ * Textures
+ */
+//Method 1
+// const image = new Image()
+// image.src = '/textures/door/color.jpg'
+// const texture = new THREE.Texture(image)
+// texture.colorSpace = THREE.SRGBColorSpace
+
+// image.onload = () => 
+// {
+//     texture.needsUpdate = true
+//     console.log('Image loaded')
+// }
+
+//Method 2
+// const loadingManager = new THREE.LoadingManager()
+
+// loadingManager.onStart = () => 
+// {
+//     console.log('onStart')
+// }
+// loadingManager.onLoad = () => 
+// {
+//     console.log('onLoad')
+// }
+// loadingManager.onProgress = () => 
+// {
+//     console.log('onProgress')
+// }
+// loadingManager.onError = () => 
+// {
+//     console.log('onError')
+// }
+
+const textureLoader = new THREE.TextureLoader()
+const colorTexture = textureLoader.load('/textures/door/color.jpg')
+colorTexture.colorSpace = THREE.SRGBColorSpace
+
+
+// colorTexture.repeat.x = 2
+// colorTexture.repeat.y = 3
+// colorTexture.wrapS = THREE.MirroredRepeatWrapping
+// colorTexture.wrapT = THREE.MirroredRepeatWrapping
+// colorTexture.offset.x = 0.5
+// colorTexture.offset.y = 0.5
+// colorTexture.rotation = Math.PI / 4
+// colorTexture.center.x = 0.5
+// colorTexture.center.y = 0.5 
+colorTexture.minFilter = THREE.NearestFilter  
+
+
+// MAG filter test
+const checkTexture = textureLoader.load('/textures/checkerboard-8x8.png')
+checkTexture.magFilter = THREE.NearestFilter
+checkTexture.colorSpace = THREE.SRGBColorSpace
 
 /**
  * Base
@@ -14,7 +72,7 @@ const scene = new THREE.Scene()
  * Object
  */
 const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const material = new THREE.MeshBasicMaterial({ map: checkTexture })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
